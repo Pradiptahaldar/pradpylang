@@ -1,19 +1,2 @@
-# Variables
 keep age = 19
-keep pi = 3.14
-keep name = "PradPyLang"
-
-# Condition
-when age >= 18 {
-    show("Adult")
-} otherwise {
-    show("Minor")
-}
-
-##
-Loop
-##
-
-each i from 1 to 5 step 1 {
-    show(i)
-}
+show(age)
