@@ -1,3 +1,4 @@
+#Abstract Syntax Tree full form
 class ASTNode:
     """
     Base class for every node in the Abstract Syntax Tree (AST).
@@ -105,4 +106,34 @@ class BinaryExpression(Expression):
             f"{self.left}, "
             f"{self.operator.name}, "
             f"{self.right})"
+        )
+class WhenStatement(Statement):
+    """
+    Represents:
+        when condition {
+            code
+        }
+    """
+
+    def __init__(
+        self,
+        condition,
+        body,
+        orwhen_branches=None,
+        otherwise_body=None,
+    ):
+        self.condition = condition
+        self.body = body
+        self.orwhen_branches = (
+            orwhen_branches if orwhen_branches else []
+        )
+        self.otherwise_body = otherwise_body
+
+    def __repr__(self):
+        return (
+            f"WhenStatement("
+            f"condition={self.condition}, "
+            f"body={self.body}, "
+            f"orwhen={self.orwhen_branches}, "
+            f"otherwise={self.otherwise_body})"
         )

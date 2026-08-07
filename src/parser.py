@@ -8,6 +8,7 @@ from prad_ast import (
     VariableDeclaration,
     ShowStatement,
     BinaryExpression,
+    WhenStatement,
 )
 
 
@@ -68,8 +69,10 @@ class Parser:
 
         if self.current_token.type == TokenType.KEEP:
             return self.parse_variable_declaration()
-        if self.current_token.type == TokenType.SHOW:
+        elif self.current_token.type == TokenType.SHOW:
             return self.parse_show_statement()
+        elif self.current_token.type == TokenType.WHEN:
+            return self.parse_when_statement()
 
         raise ParserError(
             f"Unexpected token {self.current_token.type.name}"
@@ -176,3 +179,41 @@ class Parser:
         raise ParserError(
             f"Unexpected token {self.current_token.type.name}"
         )
+    def parse_when_statement(self):
+
+        self.expect(TokenType.WHEN)
+
+        condition = self.parse_expression()
+
+        body = self.parse_block()
+        orwhen_branches = []
+
+        while self.current_token.type == TokenType.ORWHEN:
+            self.expect(TokenType.ORWHEN)
+
+            orwhen_condition = self.parse_expression()
+
+            orwhen_body = self.parse_block()
+
+            orwhen_branches.append(
+                (orwhen_condition, orwhen_body)
+            )
+        otherwise_body = None
+        if self.current_token.type == TokenType.OTHERWISE:
+            self.expect(TokenType.OTHERWISE)
+
+            otherwise_body = self.parse_block()
+
+        return WhenStatement(condition, body, orwhen_branches=orwhen_branches,otherwise_body=otherwise_body,)
+    def parse_block(self):
+
+        self.expect(TokenType.LEFT_BRACE)
+
+        statements = []
+
+        while self.current_token.type != TokenType.RIGHT_BRACE:
+            statements.append(self.parse_statement())
+
+        self.expect(TokenType.RIGHT_BRACE)
+
+        return statements

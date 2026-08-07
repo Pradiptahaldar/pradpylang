@@ -1,3 +1,13 @@
-keep result = 10 + 20 * 3
+keep age = 16
 
-show(result)
+when age >= 18 {
+    show("Adult")
+}
+orwhen age >= 13 {
+    show("Teen")
+}
+otherwise {
+    show("Child")
+}
+
+show(age)
