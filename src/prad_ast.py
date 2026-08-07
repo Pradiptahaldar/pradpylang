@@ -86,3 +86,23 @@ class Program(ASTNode):
 
     def __repr__(self):
         return f"Program({self.statements})"
+class BinaryExpression(Expression):
+    """
+    Represents binary operations like:
+        a + b
+        x * y
+        age >= 18
+    """
+
+    def __init__(self, left, operator, right):
+        self.left = left
+        self.operator = operator
+        self.right = right
+
+    def __repr__(self):
+        return (
+            f"BinaryExpression("
+            f"{self.left}, "
+            f"{self.operator.name}, "
+            f"{self.right})"
+        )

@@ -6,6 +6,9 @@ with open("../examples/hello.prad", "r") as file:
 lexer = Lexer(source)
 tokens = lexer.tokenize()
 
+for token in tokens:
+    print(token)
+
 parser = Parser(tokens)
 program = parser.parse()
 

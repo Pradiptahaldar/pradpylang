@@ -14,3 +14,20 @@ __pycache__/
 # OS files
 .DS_Store
 Thumbs.db
+
+ def parse_expression(self):
+        if self.current_token.type == TokenType.NUMBER:
+            token = self.expect(TokenType.NUMBER)
+            return NumberLiteral(token.value)
+
+        elif self.current_token.type == TokenType.STRING:
+            token = self.expect(TokenType.STRING)
+            return StringLiteral(token.value)
+
+        elif self.current_token.type == TokenType.IDENTIFIER:
+            token = self.expect(TokenType.IDENTIFIER)
+            return Identifier(token.value)
+
+        raise ParserError(
+            f"Unexpected token {self.current_token.type.name}"
+        )

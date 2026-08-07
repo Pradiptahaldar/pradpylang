@@ -1,4 +1,5 @@
 Language Design      ██████████ 100%
 Lexer                ██████████ 100%
-Parser               ████░░░░░░ 40%
+AST                  ██████████ 100%
+Parser               ███████░░░ 70%
 Interpreter          ░░░░░░░░░░  0%

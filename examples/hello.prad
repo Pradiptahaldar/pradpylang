@@ -1,2 +1,3 @@
-keep age = 19
-show(age)
+keep result = 10 + 20 * 3
+
+show(result)
