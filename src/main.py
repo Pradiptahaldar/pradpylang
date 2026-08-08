@@ -1,3 +1,4 @@
+from errors import ParserError
 from lexer import Lexer
 from parser import Parser
 with open("../examples/hello.prad", "r") as file:
@@ -6,10 +7,11 @@ with open("../examples/hello.prad", "r") as file:
 lexer = Lexer(source)
 tokens = lexer.tokenize()
 
-for token in tokens:
-    print(token)
-
 parser = Parser(tokens)
-program = parser.parse()
 
-print(program)
+try:
+    program = parser.parse()
+    print(program)
+
+except ParserError as error:
+    print(f"Parser Error: {error}")

@@ -9,6 +9,14 @@ from prad_ast import (
     ShowStatement,
     BinaryExpression,
     WhenStatement,
+    RepeatStatement,
+    EachStatement,
+    UnaryExpression,
+    BooleanLiteral,
+    LogicalExpression,
+    CallExpression,
+    TaskDeclaration,
+    ReturnStatement,
 )
 
 
@@ -65,6 +73,7 @@ class Parser:
             statements.append(self.parse_statement())
 
         return Program(statements)
+#parse main 
     def parse_statement(self):
 
         if self.current_token.type == TokenType.KEEP:
@@ -73,13 +82,21 @@ class Parser:
             return self.parse_show_statement()
         elif self.current_token.type == TokenType.WHEN:
             return self.parse_when_statement()
-
+        elif self.current_token.type == TokenType.REPEAT:
+            return self.parse_repeat_statement()
+        elif self.current_token.type == TokenType.EACH:
+            return self.parse_each_statement()
+        elif self.current_token.type == TokenType.TASK:
+            return self.parse_task_declaration()
+        elif self.current_token.type == TokenType.RETURN:
+            return self.parse_return_statement()
+    
         raise ParserError(
             f"Unexpected token {self.current_token.type.name}"
         )
 #parse expressions start here
     def parse_expression(self):
-        return self.parse_comparison()
+        return self.parse_logical_or()
 
     def parse_comparison(self):
 
@@ -132,7 +149,7 @@ class Parser:
 
 
     def parse_factor(self):
-        left = self.parse_primary()
+        left = self.parse_unary()
 
         while self.current_token.type in (
             TokenType.STAR,
@@ -143,7 +160,7 @@ class Parser:
             operator = self.current_token
             self.advance()
 
-            right = self.parse_primary()
+            right = self.parse_unary()
 
             left = BinaryExpression(
                 left,
@@ -167,6 +184,14 @@ class Parser:
             token = self.expect(TokenType.IDENTIFIER)
             return Identifier(token.value)
 
+        elif self.current_token.type == TokenType.YES:
+            self.advance()
+            return BooleanLiteral(True)
+
+        elif self.current_token.type == TokenType.NO:
+            self.advance()
+            return BooleanLiteral(False)
+
         elif self.current_token.type == TokenType.LEFT_PAREN:
             self.expect(TokenType.LEFT_PAREN)
 
@@ -177,8 +202,9 @@ class Parser:
             return expression
 
         raise ParserError(
-            f"Unexpected token {self.current_token.type.name}"
-        )
+            f"Expected expression, "
+            f"but got {self.current_token.type.name}"
+    )
     def parse_when_statement(self):
 
         self.expect(TokenType.WHEN)
@@ -211,9 +237,170 @@ class Parser:
 
         statements = []
 
-        while self.current_token.type != TokenType.RIGHT_BRACE:
+        while (
+            self.current_token.type != TokenType.RIGHT_BRACE
+            and self.current_token.type != TokenType.EOF
+        ):
+              
             statements.append(self.parse_statement())
 
         self.expect(TokenType.RIGHT_BRACE)
 
         return statements
+    def parse_repeat_statement(self):
+
+        self.expect(TokenType.REPEAT)
+
+        count = self.parse_expression()
+
+        body = self.parse_block()
+
+        return RepeatStatement(count, body)
+    def parse_each_statement(self):
+
+        self.expect(TokenType.EACH)
+
+        variable = Identifier(
+            self.expect(TokenType.IDENTIFIER).value
+        )
+
+        self.expect(TokenType.IN)
+
+        iterable = self.parse_expression()
+
+        body = self.parse_block()
+
+        return EachStatement(
+            variable,
+            iterable,
+            body
+        )
+    def parse_unary(self):
+
+        if self.current_token.type in (
+            TokenType.MINUS,
+            TokenType.PLUS,
+            TokenType.NOT, 
+        ):
+
+            operator = self.current_token
+            self.advance()
+
+            operand = self.parse_unary()
+
+            return UnaryExpression(
+                operator.type,
+                operand
+            )
+
+        return self.parse_call()
+    def parse_logical_and(self):
+
+        left = self.parse_comparison()
+
+        while self.current_token.type == TokenType.AND:
+
+            operator = self.current_token
+            self.advance()
+
+            right = self.parse_comparison()
+
+            left = LogicalExpression(
+                left,
+                operator.type,
+                right
+            )
+
+        return left
+    def parse_logical_or(self):
+
+        left = self.parse_logical_and()
+
+        while self.current_token.type == TokenType.OR:
+
+            operator = self.current_token
+            self.advance()
+
+            right = self.parse_logical_and()
+
+            left = LogicalExpression(
+                left,
+                operator.type,
+                right
+            )
+
+        return left
+    def parse_call(self):
+
+        expression = self.parse_primary()
+
+        while self.current_token.type == TokenType.LEFT_PAREN:
+
+            self.expect(TokenType.LEFT_PAREN)
+
+            arguments = []
+
+            if self.current_token.type != TokenType.RIGHT_PAREN:
+
+                arguments.append(self.parse_expression())
+
+                while self.current_token.type == TokenType.COMMA:
+
+                    self.expect(TokenType.COMMA)
+
+                    arguments.append(self.parse_expression())
+
+            self.expect(TokenType.RIGHT_PAREN)
+
+            expression = CallExpression(
+                expression,
+                arguments
+            )
+
+        return expression
+    def parse_task_declaration(self):
+
+        self.expect(TokenType.TASK)
+
+        name = Identifier(
+            self.expect(TokenType.IDENTIFIER).value
+        )
+
+        self.expect(TokenType.LEFT_PAREN)
+
+        parameters = []
+
+        if self.current_token.type != TokenType.RIGHT_PAREN:
+
+            parameters.append(
+                Identifier(
+                    self.expect(TokenType.IDENTIFIER).value
+                )
+            )
+
+            while self.current_token.type == TokenType.COMMA:
+
+                self.expect(TokenType.COMMA)
+
+                parameters.append(
+                    Identifier(
+                        self.expect(TokenType.IDENTIFIER).value
+                    )
+                )
+
+        self.expect(TokenType.RIGHT_PAREN)
+
+        body = self.parse_block()
+
+        return TaskDeclaration(
+            name,
+            parameters,
+            body
+        )
+    def parse_return_statement(self):
+
+        self.expect(TokenType.RETURN)
+
+        value = self.parse_expression()
+
+        return ReturnStatement(value)

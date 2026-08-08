@@ -107,6 +107,42 @@ class BinaryExpression(Expression):
             f"{self.operator.name}, "
             f"{self.right})"
         )
+class UnaryExpression(Expression):
+    """
+    Represents unary operations like:
+        -age
+        +age
+    """
+
+    def __init__(self, operator, operand):
+        self.operator = operator
+        self.operand = operand
+
+    def __repr__(self):
+        return (
+            f"UnaryExpression("
+            f"{self.operator.name}, "
+            f"{self.operand})"
+        )
+class LogicalExpression(Expression):
+    """
+    Represents logical operations like:
+        a and b
+        a or b
+    """
+
+    def __init__(self, left, operator, right):
+        self.left = left
+        self.operator = operator
+        self.right = right
+
+    def __repr__(self):
+        return (
+            f"LogicalExpression("
+            f"{self.left}, "
+            f"{self.operator.name}, "
+            f"{self.right})"
+        )
 class WhenStatement(Statement):
     """
     Represents:
@@ -137,3 +173,98 @@ class WhenStatement(Statement):
             f"orwhen={self.orwhen_branches}, "
             f"otherwise={self.otherwise_body})"
         )
+class RepeatStatement(Statement):
+    """
+    Represents:
+        repeat times {
+            code
+        }
+    """
+
+    def __init__(self, count, body):
+        self.count = count
+        self.body = body
+
+    def __repr__(self):
+        return (
+            f"RepeatStatement("
+            f"count={self.count}, "
+            f"body={self.body})"
+        )
+class EachStatement(Statement):
+    """
+    Represents:
+        each item in iterable {
+            ...
+        }
+    """
+
+    def __init__(self, variable, iterable, body):
+        self.variable = variable
+        self.iterable = iterable
+        self.body = body
+
+    def __repr__(self):
+        return (
+            f"EachStatement("
+            f"variable={self.variable}, "
+            f"iterable={self.iterable}, "
+            f"body={self.body})"
+        )
+class BooleanLiteral(Expression):
+
+    def __init__(self, value):
+        self.value = value
+
+    def __repr__(self):
+        return f"BooleanLiteral({self.value})"
+class CallExpression(Expression):
+    """
+    Represents a function call:
+        greet("Ivan")
+        calculate(10, 20)
+    """
+
+    def __init__(self, callee, arguments):
+        self.callee = callee
+        self.arguments = arguments
+
+    def __repr__(self):
+        return (
+            f"CallExpression("
+            f"callee={self.callee}, "
+            f"arguments={self.arguments})"
+        )
+class TaskDeclaration(Statement):
+    """
+    Represents:
+
+        task add(a, b) {
+            ...
+        }
+    """
+
+    def __init__(self, name, parameters, body):
+        self.name = name
+        self.parameters = parameters
+        self.body = body
+
+    def __repr__(self):
+        return (
+            f"TaskDeclaration("
+            f"name={self.name}, "
+            f"parameters={self.parameters}, "
+            f"body={self.body})"
+        )
+class ReturnStatement(Statement):
+    """
+    Represents:
+
+        return expression
+    """
+
+    def __init__(self, value):
+        self.value = value
+
+    def __repr__(self):
+        return f"ReturnStatement(value={self.value})"

@@ -13,8 +13,10 @@ class TokenType(Enum):
     OTHERWISE = auto()
 
     REPEAT = auto()
+    IN = auto()
     START = auto()
     EACH = auto()
+    TASK = auto()
 
     FROM = auto()
     TO = auto()
@@ -90,11 +92,13 @@ KEYWORDS = {
     "otherwise": TokenType.OTHERWISE,
 
     "repeat": TokenType.REPEAT,
+    "in": TokenType.IN,
     "start": TokenType.START,
     "each": TokenType.EACH,
     "from": TokenType.FROM,
     "to": TokenType.TO,
     "step": TokenType.STEP,
+    "task": TokenType.TASK,
 
     "yes": TokenType.YES,
     "no": TokenType.NO,
