@@ -2,7 +2,7 @@ from tokens import Token, TokenType, KEYWORDS
 from errors import LexerError
 
 from operators import OPERATORS
-from symbols import SYMBOLS
+from runtime.symbols import SYMBOLS
 
 
 class Lexer:
