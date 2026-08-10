@@ -1,2 +1,2 @@
-task nothing() {
-}
+when age >= 18 {
+    show("Adult")
