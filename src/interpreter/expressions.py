@@ -22,14 +22,18 @@ class ExpressionInterpreter:
 
         if isinstance(expression, BooleanLiteral):
             return expression.value
+
+        if isinstance(expression, Identifier):
+            return self.environment.get(expression.name)
+
         if isinstance(expression, BinaryExpression):
             return self.evaluate_binary(expression)
 
         if isinstance(expression, LogicalExpression):
             return self.evaluate_logical(expression)
 
-        if isinstance(expression, Identifier):
-            return self.environment.get(expression.name)
+        if isinstance(expression, UnaryExpression):
+            return self.evaluate_unary(expression)
 
         if isinstance(expression, CallExpression):
             return self.evaluate_call(expression)
@@ -38,86 +42,89 @@ class ExpressionInterpreter:
             f"Unsupported expression: "
             f"{type(expression).__name__}"
         )
-        def evaluate_binary(self, expression):
-            left = self.evaluate(expression.left)
-            right = self.evaluate(expression.right)
 
-            operator = expression.operator
+    def evaluate_binary(self, expression):
+        left = self.evaluate(expression.left)
+        right = self.evaluate(expression.right)
 
-            if operator.name == "PLUS":
-                return left + right
+        operator = expression.operator
 
-            if operator.name == "MINUS":
-                return left - right
+        if operator.name == "PLUS":
+            return left + right
 
-            if operator.name == "STAR":
-                return left * right
+        if operator.name == "MINUS":
+            return left - right
 
-            if operator.name == "SLASH":
-                return left / right
+        if operator.name == "STAR":
+            return left * right
 
-            if operator.name == "MODULO":
-                return left % right
+        if operator.name == "SLASH":
+            return left / right
 
-            if operator.name == "GREATER":
-                return left > right
+        if operator.name == "MODULO":
+            return left % right
 
-            if operator.name == "GREATER_EQUAL":
-                return left >= right
+        if operator.name == "GREATER":
+            return left > right
 
-            if operator.name == "LESS":
-                return left < right
+        if operator.name == "GREATER_EQUAL":
+            return left >= right
 
-            if operator.name == "LESS_EQUAL":
-                return left <= right
+        if operator.name == "LESS":
+            return left < right
 
-            if operator.name == "EQUAL_EQUAL":
-                return left == right
+        if operator.name == "LESS_EQUAL":
+            return left <= right
 
-            if operator.name == "NOT_EQUAL":
-                return left != right
+        if operator.name == "EQUAL_EQUAL":
+            return left == right
 
-            raise RuntimeError(
-                f"Unsupported binary operator: {operator.name}"
-            )
+        if operator.name == "NOT_EQUAL":
+            return left != right
 
-        def evaluate_logical(self, expression):
-            left = self.evaluate(expression.left)
+        raise RuntimeError(
+            f"Unsupported binary operator: {operator.name}"
+        )
 
-            if expression.operator.name == "AND":
-                if not left:
-                    return False
+    def evaluate_logical(self, expression):
+        left = self.evaluate(expression.left)
 
-                return bool(self.evaluate(expression.right))
+        if expression.operator.name == "AND":
+            if not left:
+                return False
 
-            if expression.operator.name == "OR":
-                if left:
-                    return True
+            return bool(self.evaluate(expression.right))
 
-                return bool(self.evaluate(expression.right))
+        if expression.operator.name == "OR":
+            if left:
+                return True
 
-            raise RuntimeError(
-                f"Unsupported logical operator: "
-                f"{expression.operator.name}"
-            )
-        def evaluate_unary(self, expression):
-            operand = self.evaluate(expression.operand)
+            return bool(self.evaluate(expression.right))
 
-            operator = expression.operator
+        raise RuntimeError(
+            f"Unsupported logical operator: "
+            f"{expression.operator.name}"
+        )
 
-            if operator.name == "MINUS":
-                return -operand
+    def evaluate_unary(self, expression):
+        operand = self.evaluate(expression.operand)
 
-            if operator.name == "PLUS":
-                return +operand
+        operator = expression.operator
 
-            if operator.name == "NOT":
-                return not operand
+        if operator.name == "MINUS":
+            return -operand
 
-            raise RuntimeError(
-                f"Unsupported unary operator: {operator.name}"
-            )
-        def evaluate_call(self, expression):
-            raise RuntimeError(
-                "Function calls are not implemented yet"
-            )
+        if operator.name == "PLUS":
+            return +operand
+
+        if operator.name == "NOT":
+            return not operand
+
+        raise RuntimeError(
+            f"Unsupported unary operator: {operator.name}"
+        )
+
+    def evaluate_call(self, expression):
+        raise RuntimeError(
+            "Function calls are not implemented yet"
+        )

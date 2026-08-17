@@ -1,21 +1,20 @@
-from errors import ParserError
 from lexer import Lexer
 from parser import Parser
-from tokens import token
-with open("../examples/hello.prad", "r") as file:
-    source = file.read()
+from interpreter import Interpreter
+
+
+source = """
+keep age = 20
+show(age)
+show(age + 5)
+"""
+
 
 lexer = Lexer(source)
 tokens = lexer.tokenize()
 
 parser = Parser(tokens)
+program = parser.parse()
 
-for token in tokens:
-    print(token)
-
-try:
-    program = parser.parse()
-    print(program)
-
-except ParserError as error:
-    print(f"Parser Error: {error}")
+interpreter = Interpreter()
+interpreter.interpret(program)
