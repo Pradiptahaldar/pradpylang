@@ -7,6 +7,7 @@ from prad_ast import (
     LogicalExpression,
     UnaryExpression,
     CallExpression,
+    ListLiteral,
 )
 
 
@@ -37,6 +38,8 @@ class ExpressionInterpreter:
 
         if isinstance(expression, CallExpression):
             return self.evaluate_call(expression)
+        if isinstance(expression, ListLiteral):
+            return [self.evaluate(element) for element in expression.elements]
 
         raise RuntimeError(
             f"Unsupported expression: "

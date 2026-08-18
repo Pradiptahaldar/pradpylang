@@ -1,19 +1,13 @@
 from .base import Statement
-
-
 class ShowStatement(Statement):
     """
     Represents:
     show(expression)
     """
-
     def __init__(self, expression):
         self.expression = expression
-
     def __repr__(self):
         return f"ShowStatement({self.expression})"
-
-
 class WhenStatement(Statement):
     """
     Represents:
@@ -21,7 +15,6 @@ class WhenStatement(Statement):
         code
     }
     """
-
     def __init__(
         self,
         condition,
@@ -86,8 +79,6 @@ class EachStatement(Statement):
             f"iterable={self.iterable}, "
             f"body={self.body})"
         )
-
-
 class ReturnStatement(Statement):
     """
     Represents:

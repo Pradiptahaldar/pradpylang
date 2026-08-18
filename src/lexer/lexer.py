@@ -89,7 +89,14 @@ class Lexer:
                 continue
 
             # Operators
-            elif self.current_char in OPERATORS:
+            elif (
+                self.current_char in OPERATORS
+                or (
+                    self.peek() is not None
+
+                    and self.current_char + self.peek() in OPERATORS
+                )
+            ):
                 tokens.append(self.read_operator())
                 continue
 

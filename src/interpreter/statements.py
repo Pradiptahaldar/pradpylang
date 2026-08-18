@@ -3,6 +3,7 @@ from prad_ast import (
     VariableDeclaration,
     WhenStatement,
     RepeatStatement,
+    EachStatement,
 )
 class StatementInterpreter:
     def execute_statement(self, statement):
@@ -21,6 +22,8 @@ class StatementInterpreter:
 
         elif isinstance(statement, RepeatStatement):
             self.execute_repeat(statement)
+        elif isinstance(statement, EachStatement):
+            self.execute_each(statement)
 
         else:
             raise RuntimeError(
@@ -49,5 +52,11 @@ class StatementInterpreter:
         count = self.evaluate(statement.count)
 
         for _ in range(count):
+            for body_statement in statement.body:
+                self.execute_statement(body_statement)
+    def execute_each(self, statement):
+        iterable= self.evaluate(statement.iterable)
+        for value in iterable:
+            self.environment.define(statement.variable.name, value)
             for body_statement in statement.body:
                 self.execute_statement(body_statement)

@@ -1,3 +1,5 @@
-when age >= 18 {
-    show("Adult")
+keep numbers = [10, 20, 30]
+
+each number in numbers {
+    show(number)
 }
