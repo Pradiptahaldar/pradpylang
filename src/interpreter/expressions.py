@@ -9,8 +9,6 @@ from prad_ast import (
     CallExpression,
     ListLiteral,
 )
-
-
 class ExpressionInterpreter:
 
     def evaluate(self, expression):
@@ -128,6 +126,9 @@ class ExpressionInterpreter:
         )
 
     def evaluate_call(self, expression):
-        raise RuntimeError(
-            "Function calls are not implemented yet"
-        )
+        if not isinstance(expression.callee, Identifier):
+            raise RuntimeError("task name must be an identifier." )
+        name = expression.callee.name
+        task = self.functions.get(name)
+        from .functions import execute_task
+        return execute_task(self, task, expression.arguments)

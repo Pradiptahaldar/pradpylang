@@ -1,9 +1,12 @@
+from .functions import TaskReturn
 from prad_ast import (
     ShowStatement,
     VariableDeclaration,
     WhenStatement,
     RepeatStatement,
     EachStatement,
+    TaskDeclaration,
+    ReturnStatement,
 )
 class StatementInterpreter:
     def execute_statement(self, statement):
@@ -24,6 +27,10 @@ class StatementInterpreter:
             self.execute_repeat(statement)
         elif isinstance(statement, EachStatement):
             self.execute_each(statement)
+        elif isinstance(statement, TaskDeclaration):
+            self.execute_task_declaration(statement)
+        elif isinstance(statement, ReturnStatement):
+            self.execute_return(statement)
 
         else:
             raise RuntimeError(
@@ -60,3 +67,11 @@ class StatementInterpreter:
             self.environment.define(statement.variable.name, value)
             for body_statement in statement.body:
                 self.execute_statement(body_statement)
+    def execute_task_declaration(self, statement):
+        self.functions.define(
+            statement.name.name,
+            statement
+        )
+    def execute_return(self, statement):
+        value = self.evaluate(statement.value)
+        raise TaskReturn(value)

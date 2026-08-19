@@ -1,5 +1,5 @@
-keep numbers = [10, 20, 30]
-
-each number in numbers {
-    show(number)
+task add(a, b) {
+    return a + b
 }
+
+show(add(10, 20, 30))

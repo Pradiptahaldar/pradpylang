@@ -134,9 +134,6 @@ class StatementParser:
         )
 
     def parse_return_statement(self):
-
         self.expect(TokenType.RETURN)
-
         value = self.parse_expression()
-
         return ReturnStatement(value)
