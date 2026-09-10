@@ -2,4 +2,4 @@ task add(a, b) {
     return a + b
 }
 
-show(add(10, 20, 30))
+show(add(10, 20))
