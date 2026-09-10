@@ -7,6 +7,7 @@ from prad_ast import (
     EachStatement,
     TaskDeclaration,
     ReturnStatement,
+    ExpressionStatement
 )
 class StatementInterpreter:
     def execute_statement(self, statement):
@@ -31,6 +32,8 @@ class StatementInterpreter:
             self.execute_task_declaration(statement)
         elif isinstance(statement, ReturnStatement):
             self.execute_return(statement)
+        elif isinstance(statement, ExpressionStatement):
+            self.evaluate(statement.expression)
 
         else:
             raise RuntimeError(

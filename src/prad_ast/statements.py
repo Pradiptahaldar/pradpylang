@@ -90,3 +90,12 @@ class ReturnStatement(Statement):
 
     def __repr__(self):
         return f"ReturnStatement(value={self.value})"
+class ExpressionStatement(Statement):
+    """
+    Represents a standalone expression.
+    Example:greet("Ivan")
+    """
+    def __init__(self, expression):
+        self.expression = expression
+    def __repr__(self):
+        return f"ExpressionStatement({self.expression})"

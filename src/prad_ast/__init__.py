@@ -1,5 +1,5 @@
 from .base import ASTNode, Statement, Expression, Program
-
+from .statements import ExpressionStatement
 from .expressions import (
     NumberLiteral,
     StringLiteral,

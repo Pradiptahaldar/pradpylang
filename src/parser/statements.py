@@ -7,6 +7,7 @@ from prad_ast import (
     RepeatStatement,
     EachStatement,
     ReturnStatement,
+    ExpressionStatement
 )
 class StatementParser:
 
@@ -33,52 +34,36 @@ class StatementParser:
         elif self.current_token.type == TokenType.RETURN:
             return self.parse_return_statement()
 
+        elif self.current_token.type == TokenType.IDENTIFIER:
+            return self.parse_expression_statement()
+
         raise ParserError(
             f"Unexpected token {self.current_token.type.name}"
         )
 
     def parse_show_statement(self):
-
         self.expect(TokenType.SHOW)
-
         self.expect(TokenType.LEFT_PAREN)
-
         expression = self.parse_expression()
-
         self.expect(TokenType.RIGHT_PAREN)
-
         return ShowStatement(expression)
 
     def parse_when_statement(self):
-
         self.expect(TokenType.WHEN)
-
         condition = self.parse_expression()
-
         body = self.parse_block()
-
         orwhen_branches = []
-
         while self.current_token.type == TokenType.ORWHEN:
-
             self.expect(TokenType.ORWHEN)
-
             orwhen_condition = self.parse_expression()
-
             orwhen_body = self.parse_block()
-
             orwhen_branches.append(
                 (orwhen_condition, orwhen_body)
             )
-
         otherwise_body = None
-
         if self.current_token.type == TokenType.OTHERWISE:
-
             self.expect(TokenType.OTHERWISE)
-
             otherwise_body = self.parse_block()
-
         return WhenStatement(
             condition,
             body,
@@ -87,46 +72,29 @@ class StatementParser:
         )
 
     def parse_block(self):
-
         self.expect(TokenType.LEFT_BRACE)
-
         statements = []
-
         while (
             self.current_token.type != TokenType.RIGHT_BRACE
             and self.current_token.type != TokenType.EOF
         ):
-
             statements.append(self.parse_statement())
-
         self.expect(TokenType.RIGHT_BRACE)
-
         return statements
-
     def parse_repeat_statement(self):
-
         self.expect(TokenType.REPEAT)
-
         count = self.parse_expression()
-
         body = self.parse_block()
-
         return RepeatStatement(count, body)
 
     def parse_each_statement(self):
-
         self.expect(TokenType.EACH)
-
         variable = Identifier(
             self.expect(TokenType.IDENTIFIER).value
         )
-
         self.expect(TokenType.IN)
-
         iterable = self.parse_expression()
-
         body = self.parse_block()
-
         return EachStatement(
             variable,
             iterable,
@@ -137,3 +105,7 @@ class StatementParser:
         self.expect(TokenType.RETURN)
         value = self.parse_expression()
         return ReturnStatement(value)
+
+    def parse_expression_statement(self):
+        expression = self.parse_expression()
+        return ExpressionStatement(expression)

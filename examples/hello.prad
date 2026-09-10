@@ -1,5 +1,8 @@
-task add(a, b) {
-    return a + b
+task countdown(n) {
+    when n > 0 {
+        show(n)
+        countdown(n - 1)
+    }
 }
 
-show(add(10, 20))
+countdown(5)
