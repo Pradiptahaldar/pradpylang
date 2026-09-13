@@ -50,33 +50,41 @@ class ExpressionInterpreter:
         right = self.evaluate(expression.right)
 
         operator = expression.operator
+        try:
+            if operator.name == "PLUS":
+                return left + right
 
-        if operator.name == "PLUS":
-            return left + right
+            if operator.name == "MINUS":
+                return left - right
 
-        if operator.name == "MINUS":
-            return left - right
+            if operator.name == "STAR":
+                return left * right
 
-        if operator.name == "STAR":
-            return left * right
+            if operator.name == "SLASH":
+                if right==0:
+                    raise RuntimeError("division bt zero")
+                return left / right
 
-        if operator.name == "SLASH":
-            return left / right
+            if operator.name == "MODULO":
+                if right == 0:
+                    raise RuntimeError("Modulo by zero")
+                return left % right
+        except TypeError:
+            raise RuntimeError(f"invalid operands for {operator.name}")
+        try:
+            if operator.name == "GREATER":
+                return left > right
 
-        if operator.name == "MODULO":
-            return left % right
+            if operator.name == "GREATER_EQUAL":
+                return left >= right
 
-        if operator.name == "GREATER":
-            return left > right
+            if operator.name == "LESS":
+                return left < right
 
-        if operator.name == "GREATER_EQUAL":
-            return left >= right
-
-        if operator.name == "LESS":
-            return left < right
-
-        if operator.name == "LESS_EQUAL":
-            return left <= right
+            if operator.name == "LESS_EQUAL":
+                return left <= right
+        except TypeError:
+            raise RuntimeError(f"invalid operands for {operator.name}")
 
         if operator.name == "EQUAL_EQUAL":
             return left == right
@@ -110,14 +118,15 @@ class ExpressionInterpreter:
 
     def evaluate_unary(self, expression):
         operand = self.evaluate(expression.operand)
-
         operator = expression.operator
+        try:
+            if operator.name == "MINUS":
+                return -operand
 
-        if operator.name == "MINUS":
-            return -operand
-
-        if operator.name == "PLUS":
-            return +operand
+            if operator.name == "PLUS":
+                return +operand
+        except:
+            raise RuntimeError(f"invlid operand for{operator.name}")
 
         if operator.name == "NOT":
             return not operand
