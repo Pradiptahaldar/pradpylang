@@ -1,8 +1,1 @@
-task countdown(n) {
-    when n > 0 {
-        show(n)
-        countdown(n - 1)
-    }
-}
-
-countdown(5)
+unknown()

@@ -9,6 +9,7 @@ from prad_ast import (
     CallExpression,
     ListLiteral,
 )
+from errors import RuntimeError
 class ExpressionInterpreter:
 
     def evaluate(self, expression):

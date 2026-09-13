@@ -1,3 +1,5 @@
+from errors import RuntimeError
+
 class FunctionRegistry:
     def __init__(self):
         self.functions = {}
