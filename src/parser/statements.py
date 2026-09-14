@@ -35,6 +35,8 @@ class StatementParser:
             return self.parse_return_statement()
 
         elif self.current_token.type == TokenType.IDENTIFIER:
+            if self.peek().type == TokenType.ASSIGN:
+                return self.parse_assignment_statement()
             return self.parse_expression_statement()
 
         raise ParserError(
@@ -109,3 +111,12 @@ class StatementParser:
     def parse_expression_statement(self):
         expression = self.parse_expression()
         return ExpressionStatement(expression)
+
+    def parse_assignment_statement(self):
+        name = Identifier(
+            self.expect(TokenType.IDENTIFIER).value
+        )
+        self.expect(TokenType.ASSIGN)
+        value = self.parse_expression()
+        from prad_ast import AssignmentStatement
+        return AssignmentStatement(name, value)

@@ -8,7 +8,8 @@ from prad_ast import (
     EachStatement,
     TaskDeclaration,
     ReturnStatement,
-    ExpressionStatement
+    ExpressionStatement,
+    AssignmentStatement
 )
 class StatementInterpreter:
     def execute_statement(self, statement):
@@ -22,6 +23,9 @@ class StatementInterpreter:
                 statement.name.name,
                 value
             )
+        elif isinstance(statement, AssignmentStatement):
+            value=self.evaluate(statement.value)
+            self.environment.assign(statement.name.name, value)
         elif isinstance(statement, WhenStatement):
             self.execute_when(statement)
 
@@ -35,7 +39,7 @@ class StatementInterpreter:
             self.execute_return(statement)
         elif isinstance(statement, ExpressionStatement):
             self.evaluate(statement.expression)
-
+        
         else:
             raise RuntimeError(
                 f"Unsupported statement: "

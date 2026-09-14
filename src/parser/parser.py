@@ -22,6 +22,11 @@ class Parser(
             self.position += 1
             self.current_token = self.tokens[self.position]
 
+    def peek(self):
+        if self.position < len(self.tokens) - 1:
+            return self.tokens[self.position + 1]
+        return self.tokens[-1]
+
     def expect(self, token_type: TokenType):
         if self.current_token.type != token_type:
             raise ParserError(

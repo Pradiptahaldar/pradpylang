@@ -1,5 +1,4 @@
 from .base import ASTNode, Statement, Expression, Program
-from .statements import ExpressionStatement
 from .expressions import (
     NumberLiteral,
     StringLiteral,
@@ -18,6 +17,8 @@ from .statements import (
     RepeatStatement,
     EachStatement,
     ReturnStatement,
+    ExpressionStatement,
+    AssignmentStatement
 )
 
 from .declarations import (
@@ -46,6 +47,8 @@ __all__ = [
     "RepeatStatement",
     "EachStatement",
     "ReturnStatement",
+    "ExpressionStatement",
+    "AssignmentStatement",
 
     "VariableDeclaration",
     "TaskDeclaration",

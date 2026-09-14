@@ -99,3 +99,10 @@ class ExpressionStatement(Statement):
         self.expression = expression
     def __repr__(self):
         return f"ExpressionStatement({self.expression})"
+class AssignmentStatement(Statement):
+    #represents:vairable=expression
+    def __init__(self, name, value):
+        self.name= name
+        self.value= value
+    def __repr__(self):
+        return f"AssignmentStatement(name={self.name}, value={self.value})"
