@@ -24,8 +24,19 @@ class StatementInterpreter:
                 value
             )
         elif isinstance(statement, AssignmentStatement):
-            value=self.evaluate(statement.value)
-            self.environment.assign(statement.name.name, value)
+            value = self.evaluate(statement.value)
+            name = statement.name.name
+            operator = statement.operator.type.name
+
+            if operator == "ASSIGN":
+                self.environment.assign(name, value)
+
+            elif operator == "PLUS_EQUAL":
+                current = self.environment.get(name)
+                self.environment.assign(name, current + value)
+            elif operator == "MINUS_EQUAL":
+                current=self.environment.get(name)
+                self.environment.assign(name, current - value)
         elif isinstance(statement, WhenStatement):
             self.execute_when(statement)
 

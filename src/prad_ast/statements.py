@@ -101,8 +101,11 @@ class ExpressionStatement(Statement):
         return f"ExpressionStatement({self.expression})"
 class AssignmentStatement(Statement):
     #represents:vairable=expression
-    def __init__(self, name, value):
+    #variable +=, -=, *=, /=  expression    
+    def __init__(self, name, operator, value):
         self.name= name
+        self.operator= operator
         self.value= value
+        
     def __repr__(self):
-        return f"AssignmentStatement(name={self.name}, value={self.value})"
+        return f"AssignmentStatement(name={self.name}, operator={self.operator}, value={self.value} )"

@@ -1,5 +1,3 @@
-keep x= 10
+keep x = 10
+x -= 3
 show(x)
-
-x=20
-show(x) 

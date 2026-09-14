@@ -35,7 +35,12 @@ class StatementParser:
             return self.parse_return_statement()
 
         elif self.current_token.type == TokenType.IDENTIFIER:
-            if self.peek().type == TokenType.ASSIGN:
+            if self.peek().type in  (TokenType.ASSIGN,
+                                    TokenType.PLUS_EQUAL,
+                                    TokenType.MINUS_EQUAL,
+                                    TokenType.STAR_EQUAL,
+                                    TokenType.SLASH_EQUAL,
+                                ):
                 return self.parse_assignment_statement()
             return self.parse_expression_statement()
 
@@ -116,7 +121,8 @@ class StatementParser:
         name = Identifier(
             self.expect(TokenType.IDENTIFIER).value
         )
-        self.expect(TokenType.ASSIGN)
+        operator= self.current_token
+        self.advance()
         value = self.parse_expression()
         from prad_ast import AssignmentStatement
-        return AssignmentStatement(name, value)
+        return AssignmentStatement(name, operator, value)
