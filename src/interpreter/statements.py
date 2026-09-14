@@ -37,6 +37,14 @@ class StatementInterpreter:
             elif operator == "MINUS_EQUAL":
                 current=self.environment.get(name)
                 self.environment.assign(name, current - value)
+            elif operator == "STAR_EQUAL":
+                current= self.environment.get(name)
+                self.environment.assign(name, current*value)
+            elif operator =="SLASH_EQUAL":
+                current= self.environment.get(name)
+                if value==0:
+                    raise RuntimeError("divsion by zero")
+                self.environment.assign(name, current/value)
         elif isinstance(statement, WhenStatement):
             self.execute_when(statement)
 
