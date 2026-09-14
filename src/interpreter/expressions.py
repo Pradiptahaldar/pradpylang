@@ -8,6 +8,7 @@ from prad_ast import (
     UnaryExpression,
     CallExpression,
     ListLiteral,
+    EmptyLiteral,
 )
 from errors import RuntimeError
 class ExpressionInterpreter:
@@ -22,6 +23,8 @@ class ExpressionInterpreter:
 
         if isinstance(expression, BooleanLiteral):
             return expression.value
+        if isinstance(expression, EmptyLiteral):
+            return None
 
         if isinstance(expression, Identifier):
             return self.environment.get(expression.name)

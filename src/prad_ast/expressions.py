@@ -110,12 +110,14 @@ class CallExpression(Expression):
             f"arguments={self.arguments})"
         )
 class ListLiteral(Expression):
-    """
-    Represents a list of expressions.
-    Example:
-    [1, 2, 3]
+    """Represents a list of expressions.
+    Example:[1, 2, 3]
     """
     def __init__(self, elements):
         self.elements = elements
     def __repr__(self):
         return f"ListLiteral({self.elements})"
+class EmptyLiteral(Expression):
+    #Represents the empty value.    Example:empty
+    def __repr__(self):
+        return "EmptyLiteral()"

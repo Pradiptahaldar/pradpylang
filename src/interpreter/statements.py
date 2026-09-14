@@ -15,7 +15,10 @@ class StatementInterpreter:
     def execute_statement(self, statement):
         if isinstance(statement, ShowStatement):
             value = self.evaluate(statement.expression)
-            print(value)
+            if value is None:
+                print("empty")
+            else:
+                print(value)
 
         elif isinstance(statement, VariableDeclaration):
             value = self.evaluate(statement.value)

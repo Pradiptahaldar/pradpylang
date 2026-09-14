@@ -10,6 +10,7 @@ from prad_ast import (
     LogicalExpression,
     CallExpression,
     ListLiteral,
+    EmptyLiteral,
 )
 class ExpressionParser:
     def parse_expression(self):
@@ -203,6 +204,9 @@ class ExpressionParser:
                     elements.append(self.parse_expression())
             self.expect(TokenType.RIGHT_BRACKET)
             return ListLiteral(elements)
+        elif self.current_token.type == TokenType.EMPTY:
+            self.expect(TokenType.EMPTY)
+            return EmptyLiteral()
         
 
         raise ParserError(
