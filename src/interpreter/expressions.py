@@ -53,6 +53,9 @@ class ExpressionInterpreter:
         right = self.evaluate(expression.right)
 
         operator = expression.operator
+        if operator.name in ( "PLUS","MINUS", "STAR", "SLASH", "MODULO"):
+            if isinstance(left, bool)or isinstance(right, bool):
+                raise RuntimeError(f"invalid operands for {operator.name}")
         try:
             if operator.name == "PLUS":
                 return left + right
@@ -65,7 +68,7 @@ class ExpressionInterpreter:
 
             if operator.name == "SLASH":
                 if right==0:
-                    raise RuntimeError("division bt zero")
+                    raise RuntimeError("division by zero")
                 return left / right
 
             if operator.name == "MODULO":
@@ -74,6 +77,18 @@ class ExpressionInterpreter:
                 return left % right
         except TypeError:
             raise RuntimeError(f"invalid operands for {operator.name}")
+        if operator.name in (
+                "GREATER",
+                "GREATER_EQUAL",
+                "LESS",
+                "LESS_EQUAL",
+            ):
+            if isinstance(left, bool) or isinstance(right, bool):
+                raise RuntimeError(
+                    f"Invalid operands for {operator.name}"
+                )
+            if isinstance(left, list)or isinstance(right, list):
+                raise RuntimeError(f"invalid operands for {operator.name}")
         try:
             if operator.name == "GREATER":
                 return left > right
