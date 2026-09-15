@@ -1,5 +1,4 @@
 from errors import RuntimeError
-
 class FunctionRegistry:
     def __init__(self):
         self.functions = {}
@@ -25,18 +24,14 @@ def execute_task(interpreter, task, arguments):
         interpreter.evaluate(argument)
         for argument in arguments
     ]
-
     previous_environment = interpreter.environment
-
     from runtime import Environment
-    interpreter.environment = Environment()
-
+    interpreter.environment = Environment(previous_environment)
     for parameter, value in zip(task.parameters, values):
         interpreter.environment.define(
             parameter.name,
             value
         )
-
     try:
         for statement in task.body:
             interpreter.execute_statement(statement)
@@ -44,5 +39,4 @@ def execute_task(interpreter, task, arguments):
         return return_signal.value
     finally:
         interpreter.environment = previous_environment
-
     return None

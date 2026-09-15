@@ -1,1 +1,9 @@
-show(empty)
+keep x = 10
+
+task test() {
+    keep x = 20
+    show(x)
+}
+
+test()
+show(x)
