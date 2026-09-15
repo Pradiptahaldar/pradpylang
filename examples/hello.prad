@@ -1,8 +1,7 @@
 keep x = 10
 
 task test() {
-    keep x = 20
-    show(x)
+    x = 20
 }
 
 test()
