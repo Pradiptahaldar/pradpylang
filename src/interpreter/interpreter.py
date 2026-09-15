@@ -7,6 +7,7 @@ class Interpreter(ExpressionInterpreter,StatementInterpreter,):
     def __init__(self):
         self.environment = Environment()
         self.functions = FunctionRegistry()
+        self.in_task= False
 
     def interpret(self, program):
         for statement in program.statements:

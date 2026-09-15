@@ -103,5 +103,9 @@ class StatementInterpreter:
             statement
         )
     def execute_return(self, statement):
-        value = self.evaluate(statement.value)
+        if not self.in_task:
+            raise RuntimeError("'return' outside error")
+        value= None
+        if statement.value is not None:
+            value = self.evaluate(statement.value)
         raise TaskReturn(value)

@@ -24,9 +24,13 @@ def execute_task(interpreter, task, arguments):
         interpreter.evaluate(argument)
         for argument in arguments
     ]
+    #changing
     previous_environment = interpreter.environment
+    previous_in_task= interpreter.in_task
     from runtime import Environment
     interpreter.environment = Environment(previous_environment)
+    interpreter.in_task= True
+
     for parameter, value in zip(task.parameters, values):
         interpreter.environment.define(
             parameter.name,
@@ -39,4 +43,5 @@ def execute_task(interpreter, task, arguments):
         return return_signal.value
     finally:
         interpreter.environment = previous_environment
+        interpreter.in_task = previous_in_task
     return None

@@ -1,8 +1,5 @@
-keep x = 10
-
 task test() {
-    x = 20
+    return empty
 }
 
-test()
-show(x)
+show(test())

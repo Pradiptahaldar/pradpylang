@@ -110,6 +110,8 @@ class StatementParser:
 
     def parse_return_statement(self):
         self.expect(TokenType.RETURN)
+        if self.current_token.type == TokenType.RIGHT_BRACE:
+                return ReturnStatement(None)
         value = self.parse_expression()
         return ReturnStatement(value)
 
