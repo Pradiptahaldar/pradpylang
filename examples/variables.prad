@@ -1,0 +1,11 @@
+keep name = "PradPy"
+keep age = 18
+
+show(name)
+show(age)
+
+age += 1
+show(age)
+
+age = 20
+show(age)

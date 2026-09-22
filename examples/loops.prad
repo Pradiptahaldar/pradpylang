@@ -1,0 +1,9 @@
+repeat 5 {
+    show("Hello")
+}
+
+keep numbers = [1, 2, 3, 4, 5]
+
+each number in numbers {
+    show(number)
+}

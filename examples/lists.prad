@@ -1,0 +1,11 @@
+keep numbers = [10, 20, 30, 40, 50]
+
+show(numbers)
+
+show(numbers + [60, 70])
+
+show(numbers * 2)
+
+each number in numbers {
+    show(number)
+}

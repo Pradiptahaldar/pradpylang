@@ -1,0 +1,10 @@
+task factorial(n) {
+    when n <= 1 {
+        return 1
+    }
+
+    return n * factorial(n - 1)
+}
+
+keep result = factorial(5)
+show(result)

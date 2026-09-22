@@ -1,0 +1,12 @@
+task greet(name) {
+    show("Hello, " + name)
+}
+
+task add(a, b) {
+    return a + b
+}
+
+greet("PradPy")
+
+keep result = add(10, 20)
+show(result)

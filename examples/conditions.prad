@@ -1,0 +1,9 @@
+keep age = 20
+
+when age >= 18 {
+    show("Adult")
+} orwhen age >= 13 {
+    show("Teenager")
+} otherwise {
+    show("Child")
+}

@@ -1,0 +1,11 @@
+# This is a single-line comment
+
+show("Comments are supported")
+
+##
+This is a
+multi-line comment.
+Nothing inside this block is executed.
+##
+
+show("Program finished")
