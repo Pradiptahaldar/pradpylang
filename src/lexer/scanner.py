@@ -76,22 +76,58 @@ def read_string(lexer):
     # Skip opening quote
     advance(lexer)
 
-    while (
-        lexer.current_char is not None
-        and lexer.current_char != '"'
-    ):
+    while lexer.current_char is not None:
+
+        # Closing quote
+        if lexer.current_char == '"':
+            advance(lexer)
+            return Token(
+                TokenType.STRING,
+                string,
+                lexer.line
+            )
+
+        # Escape sequence
+        if lexer.current_char == "\\":
+            advance(lexer)
+
+            if lexer.current_char is None:
+                raise LexerError(
+                    f"Unterminated string at line {lexer.line}"
+                )
+
+            if lexer.current_char == '"':
+                string += '"'
+
+            elif lexer.current_char == "\\":
+                string += "\\"
+
+            elif lexer.current_char == "n":
+                string += "\n"
+
+            elif lexer.current_char == "t":
+                string += "\t"
+
+            else:
+                raise LexerError(
+                    f"Invalid escape sequence "
+                    f"'\\{lexer.current_char}' "
+                    f"at line {lexer.line}"
+                )
+
+            advance(lexer)
+            continue
+
+        # Track new lines inside strings
+        if lexer.current_char == "\n":
+            lexer.line += 1
+
         string += lexer.current_char
         advance(lexer)
 
-    if lexer.current_char is None:
-        raise LexerError(
-            f"Unterminated string at line {lexer.line}"
-        )
-
-    # Skip closing quote
-    advance(lexer)
-
-    return Token(TokenType.STRING, string, lexer.line)
+    raise LexerError(
+        f"Unterminated string at line {lexer.line}"
+    )
 
 def read_operator(lexer):
     operator = lexer.current_char
