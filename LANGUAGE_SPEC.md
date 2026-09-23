@@ -200,10 +200,79 @@ empty
 
 User input is read using the `ask()` expression.
 
-### Syntax
+### `ask()`
 
 ```prad
 ask("prompt")
+```
+
+`ask()` displays a prompt, waits for keyboard input, and returns the entered value as a string.
+
+Example:
+
+```prad
+keep name = ask("What is your name? ")
+
+show("Hello, " + name)
+```
+
+### `number()`
+
+Use `number()` to convert user input into an integer or decimal number.
+
+```prad
+keep age = number(ask("How old are you? "))
+```
+
+Examples:
+
+```text
+number("10")   → 10
+number("10.5") → 10.5
+```
+
+### `boolean()`
+
+Use `boolean()` to convert `yes` or `no` input into a boolean value.
+
+```prad
+keep answer = boolean(ask("Continue? "))
+
+when answer {
+    show("Continuing")
+}
+```
+
+Accepted values:
+
+```text
+yes → true
+no  → false
+```
+
+### `list()`
+
+Use `list()` to convert comma-separated input into a list.
+
+```prad
+keep values = list(ask("Enter values: "))
+
+show(values)
+```
+
+Example input:
+
+```text
+1, 2.5, hello, yes, no
+```
+
+produces a list containing:
+
+```text
+[1, 2.5, "hello", true, false]
+```
+
+`list()` currently supports numbers, strings, and `yes`/`no` boolean values separated by commas.
 
 ## 7. Operators
 

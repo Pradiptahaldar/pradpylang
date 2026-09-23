@@ -159,8 +159,85 @@ class ExpressionInterpreter:
 
     def evaluate_call(self, expression):
         if not isinstance(expression.callee, Identifier):
-            raise RuntimeError("task name must be an identifier." )
+            raise RuntimeError("task name must be an identifier.")
         name = expression.callee.name
+        if name == "number":
+            if len(expression.arguments) != 1:
+                raise RuntimeError(
+                    "number() expects exactly one argument."
+                )
+            value = self.evaluate(expression.arguments[0])
+            if isinstance(value, bool):
+                raise RuntimeError(
+                    "number() cannot convert a boolean."
+                )
+            if isinstance(value, (int, float)):
+                return value
+            if isinstance(value, str):
+                try:
+                    if "." in value:
+                        return float(value)
+
+                    return int(value)
+                except ValueError:
+                    raise RuntimeError(
+                        f"Cannot convert '{value}' to a number."
+                    )
+            raise RuntimeError(
+                f"Cannot convert {type(value).__name__} to a number."
+            )
+        if name == "boolean":
+            if len(expression.arguments) != 1:
+                raise RuntimeError(
+                    "boolean() expects exactly one argument."
+                )
+            value = self.evaluate(expression.arguments[0])
+            if isinstance(value, bool):
+                return value
+            if isinstance(value, str):
+                value = value.strip().lower()
+                if value == "yes":
+                    return True
+                if value == "no":
+                    return False
+            raise RuntimeError(
+                f"Cannot convert '{value}' to a boolean. "
+                "Use 'yes' or 'no'."
+            )
+        if name == "list":
+            if len(expression.arguments) != 1:
+                raise RuntimeError(
+                    "list() expects exactly one argument."
+                )
+            value = self.evaluate(expression.arguments[0])
+            if isinstance(value, list):
+                return value
+            if not isinstance(value, str):
+                raise RuntimeError(
+                    "list() expects a string or list."
+                )
+            items = value.split(",")
+            result = []
+            for item in items:
+                item = item.strip()
+                if not item:
+                    continue
+                try:
+                    if "." in item:
+                        result.append(float(item))
+                    else:
+                        result.append(int(item))
+                    continue
+                except ValueError:
+                    pass
+                if item.lower() == "yes":
+                    result.append(True)
+                    continue
+                if item.lower() == "no":
+                    result.append(False)
+                    continue
+                result.append(item)
+            return result
         task = self.functions.get(name)
         from .functions import execute_task
         return execute_task(self, task, expression.arguments)

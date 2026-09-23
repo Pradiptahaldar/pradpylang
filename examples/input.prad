@@ -1,5 +1,21 @@
+##
 keep name = ask("What is your name? ")
 keep age = ask("How old are you? ")
 
 show("Name: " + name)
 show("Age: " + age)
+
+keep n = number(ask("Enter a number: "))
+show (n)
+
+keep answer = boolean(ask("Continue? "))
+
+when answer {
+    show("Continuing")
+} otherwise {
+    show("Stopping")
+}
+##
+keep numbers = list(ask("Enter numbers: "))
+
+show(numbers)
