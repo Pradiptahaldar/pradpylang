@@ -121,3 +121,6 @@ class EmptyLiteral(Expression):
     #Represents the empty value.    Example:empty
     def __repr__(self):
         return "EmptyLiteral()"
+class AskExpression(Expression):
+    def __init__(self, prompt):
+        self.prompt = prompt

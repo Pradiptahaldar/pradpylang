@@ -196,6 +196,15 @@ empty
 
 ---
 
+## Input
+
+User input is read using the `ask()` expression.
+
+### Syntax
+
+```prad
+ask("prompt")
+
 ## 7. Operators
 
 ### Arithmetic Operators

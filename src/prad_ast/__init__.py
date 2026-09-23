@@ -10,6 +10,7 @@ from .expressions import (
     CallExpression,
     ListLiteral,
     EmptyLiteral,
+    AskExpression,
 )
 
 from .statements import (
@@ -54,4 +55,5 @@ __all__ = [
 
     "VariableDeclaration",
     "TaskDeclaration",
+    "AskExpression",
 ]

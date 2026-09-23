@@ -1,0 +1,5 @@
+keep name = ask("What is your name? ")
+keep age = ask("How old are you? ")
+
+show("Name: " + name)
+show("Age: " + age)

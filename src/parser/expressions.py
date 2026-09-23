@@ -11,6 +11,7 @@ from prad_ast import (
     CallExpression,
     ListLiteral,
     EmptyLiteral,
+    AskExpression,
 )
 class ExpressionParser:
     def parse_expression(self):
@@ -207,6 +208,12 @@ class ExpressionParser:
         elif self.current_token.type == TokenType.EMPTY:
             self.expect(TokenType.EMPTY)
             return EmptyLiteral()
+        elif self.current_token.type == TokenType.ASK:
+            self.expect(TokenType.ASK)
+            self.expect(TokenType.LEFT_PAREN)
+            prompt = self.parse_expression()
+            self.expect(TokenType.RIGHT_PAREN)
+            return AskExpression(prompt)
         
 
         raise ParserError(

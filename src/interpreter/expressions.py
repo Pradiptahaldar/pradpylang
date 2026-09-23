@@ -9,6 +9,7 @@ from prad_ast import (
     CallExpression,
     ListLiteral,
     EmptyLiteral,
+    AskExpression,
 )
 from errors import RuntimeError
 class ExpressionInterpreter:
@@ -25,6 +26,9 @@ class ExpressionInterpreter:
             return expression.value
         if isinstance(expression, EmptyLiteral):
             return None
+        if isinstance(expression, AskExpression):
+            prompt = self.evaluate(expression.prompt)
+            return input(prompt)
 
         if isinstance(expression, Identifier):
             return self.environment.get(expression.name)
